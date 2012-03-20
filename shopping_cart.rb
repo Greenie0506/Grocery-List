@@ -1,15 +1,19 @@
 class Register
+  WEIGHT_PRICES = {
+  "Apple" => 0.99,
+  "Watermelon" => 1.99,
+  "Turkey" => 2.99
+  }
 
   def self.get_total_by(cart)
     total_price = 0
     cart.items.map do |item|
       if item.weight
-        if item.name == "Apple"
-          weight_price = (0.99 * item.weight)
-        elsif item.name == "Watermelon"
-          weight_price = (1.99 * item.weight)
+        WEIGHT_PRICES.map do |k, v|
+          if k == item.name
+            total_price += v * item.weight
+          end
         end
-        total_price += weight_price
       else
         total_price += item.base_price
       end
@@ -57,15 +61,17 @@ nick = Shopper.new(name: "Nick")
 
 # Create some grocery items
 cereal = GroceryItem.new(name: "Cereal", brand: " Special K", base_price: 3.99)
-watermelon = GroceryItem.new(name: "Watermelon", weight: 15)
+watermelon = GroceryItem.new(name: "Watermelon", weight: 10)
 beer = GroceryItem.new(name: "Beer", brand: "Blue Moon", base_price: 9.99)
-apple = GroceryItem.new(name: "Apple", brand: "Macintosh", weight: 1)
+apple = GroceryItem.new(name: "Apple", brand: "Macintosh", weight: 4)
+turkey = GroceryItem.new(name: "Turkey", weight: 3)
 
 # Add items to user's cart
 nick.add_item_to_cart(beer)
 nick.add_item_to_cart(apple)
 nick.add_item_to_cart(watermelon)
 nick.add_item_to_cart(cereal)
+nick.add_item_to_cart(turkey)
 
 # Get the total from a users cart
 Register.get_total_by(nick.cart)
